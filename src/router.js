@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home'
 import Applications from './views/Applications'
 import Devices from './views/Devices'
+import Device from './views/Device'
 import About from './views/About'
 
 Vue.use(Router)
@@ -23,6 +24,11 @@ export default new Router({
       path: '/devices/:applicationId',
       name: 'devices',
       component: Devices
+    },
+    {
+      path: '/device/:applicationId/:deviceId',
+      name: 'device',
+      component: Device
     },
     {
       path: '/about',

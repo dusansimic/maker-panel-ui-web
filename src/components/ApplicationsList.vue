@@ -25,16 +25,14 @@ export default {
     }
   },
   methods: {
-    fetchApplications () {
-      (async () => {
-        try {
-          const {data: applicationsList} = await axios.get('https://maker-panel-backend.herokuapp.com/api/rest/applications')
+    async fetchApplications () {
+      try {
+        const {data: applicationsList} = await axios.get('https://maker-panel-backend.herokuapp.com/api/rest/applications')
 
-          this.applicationsList = applicationsList
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+        this.applicationsList = applicationsList
+      } catch (e) {
+        console.error(e)
+      }
     }
   },
   mounted () {

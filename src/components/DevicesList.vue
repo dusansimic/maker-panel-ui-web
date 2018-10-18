@@ -28,16 +28,14 @@ export default {
     }
   },
   methods: {
-    fetchDevices () {
-      (async () => {
-        try {
-          const {data: devicesList} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.applicationId}/devices`)
+    async fetchDevices () {
+      try {
+        const {data: devicesList} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.applicationId}/devices`)
 
-          this.devicesList = devicesList
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+        this.devicesList = devicesList
+      } catch (e) {
+        console.error(e)
+      }
     }
   },
   mounted () {

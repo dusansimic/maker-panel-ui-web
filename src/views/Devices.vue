@@ -11,16 +11,6 @@ export default {
   name: 'Devices',
   components: {
     DevicesList
-  },
-  data () {
-    return {
-
-    }
-  },
-  methods: {
-
-  },
-  mounted () {
   }
 }
 </script>
