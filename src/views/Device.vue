@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
     <LineChart v-if="this.temperature" :chart-data="{labels: this.time, datasets: [{label: 'Temperature Label', backgroundColor: '#3f89ff', data: this.temperature}]}" :options="this.temperatureOptions"/>
     <b-button variant=secondary class="w-100" v-b-modal.add-element-modal>+</b-button>
 
@@ -35,7 +34,7 @@
           label-for=elementDataSourceSelect>
           <b-form-select
             id=elementDataSourceSelect
-            :options="['temp', 'hum', 'presure']"
+            :options=elementSourceDataOptions
             required
             v-model=newElementData.dataSource></b-form-select>
         </b-form-group>
@@ -47,7 +46,7 @@
 <script>
 import LineChart from '@/components/LineChart'
 import axios from 'axios'
-import moment from 'vue-moment'
+import moment from 'moment'
 import Dexie from 'dexie'
 
 export default {
@@ -72,31 +71,27 @@ export default {
       elementTypeOptions: [
         'Line chart',
         'Bar chart'
-      ]
+      ],
+      elementSourceDataOptions: [],
+      sourceData: []
     }
   },
   methods: {
     async fetchData () {
-      let date = new Date()
-      date.setDate(date.getDate() - 0.03)
-      const {data} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.$route.params.applicationId}/device/${this.$route.params.deviceId}?time=${date.toISOString()}`)
+      // Create requrest and get data
+      let date = moment(new Date())
+      let londonDate = date.utcOffset('+00:00')
+      let minimalDate = londonDate.subtract(30, 'minutes').format()
+      console.log(minimalDate)
+      const {data} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.$route.params.applicationId}/device/${this.$route.params.deviceId}?time=${minimalDate}`)
 
-      for (const payload in data) {
-        if (data[payload].payload_fields.name) { // If name exists add it as title to data
-          this['title'] = data[payload].payload_fields.name
-        }
-        console.log(data[payload])
-        for (const field in data[payload].payload_fields) {
-          if (this[field] == null) { // If null make it an array
-            this[field] = []
-          }
-          if (this['time'] == null) {
-            this['time'] = []
-          }
-          this[field].push(data[payload].payload_fields[field])
-          this['time'].push(this.getTimeInFormat(data[payload].metadata.time, 'HH:mm'))
-        }
+      // Get source options
+      this.elementSourceDataOptions = Object.keys(data[0].payload_fields)
+      // Map data into different arrays
+      for (const type of this.elementSourceDataOptions) {
+        this.sourceData[type] = data.map(obj => obj.payload_fields[type])
       }
+      this.sourceTimes = data.map(obj => obj.metadata.time)
     },
     getTimeInFormat (time, format) {
       return moment(time).format(format)
