@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LineChart v-if="this.temperature" :chart-data="{labels: this.time, datasets: [{label: 'Temperature Label', backgroundColor: '#3f89ff', data: this.temperature}]}" :options="this.temperatureOptions"/>
+    <!-- <LineChart v-if="this.temperature" :chart-data="{labels: this.time, datasets: [{label: 'Temperature Label', backgroundColor: '#3f89ff', data: this.temperature}]}" :options="this.temperatureOptions"/> -->
     <b-button variant=secondary class="w-100" v-b-modal.add-element-modal>+</b-button>
 
     <b-modal id=add-element-modal title="Add element" @ok=onModalOk>
@@ -56,12 +56,7 @@ export default {
   },
   data () {
     return {
-      title: '',
-      temperature: [],
       time: [],
-      temperatureOptions: {
-        maintainAspectRatio: false
-      },
       db: null,
       newElementData: {
         name: '',
@@ -73,23 +68,24 @@ export default {
         'Bar chart'
       ],
       elementSourceDataOptions: [],
-      sourceData: []
+      sourceData: {}
     }
   },
   methods: {
     async fetchData () {
       // Create requrest and get data
-      let date = moment(new Date())
-      let londonDate = date.utcOffset('+00:00')
-      let minimalDate = londonDate.subtract(30, 'minutes').format()
-      console.log(minimalDate)
-      const {data} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.$route.params.applicationId}/device/${this.$route.params.deviceId}?time=${minimalDate}`)
+      let currentDate = new Date()
+      let minimalDate = moment(currentDate).subtract(30, 'minutes').utcOffset('+00:00').toISOString()
+      const {data, status, statusText} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.$route.params.applicationId}/device/${this.$route.params.deviceId}?time=${minimalDate}`)
+      if (status > 399) {
+        return alert(statusText)
+      }
 
       // Get source options
       this.elementSourceDataOptions = Object.keys(data[0].payload_fields)
       // Map data into different arrays
-      for (const type of this.elementSourceDataOptions) {
-        this.sourceData[type] = data.map(obj => obj.payload_fields[type])
+      for (const source of this.elementSourceDataOptions) {
+        this.sourceData[source] = data.map(obj => obj.payload_fields[source])
       }
       this.sourceTimes = data.map(obj => obj.metadata.time)
     },
