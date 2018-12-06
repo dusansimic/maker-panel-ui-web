@@ -107,7 +107,7 @@ export default {
     }
   },
   methods: {
-    async fetchData (removeLast) {
+    async fetchData ({removeLast}) {
       // Create requrest and get data
       let currentDate = new Date()
       let minimalDate = moment(currentDate).subtract(30, 'minutes').utcOffset('+00:00').toISOString()
@@ -139,10 +139,14 @@ export default {
       // Map data into different arrays
       for (const source of this.elementSourceDataOptions) {
         this.sourceData[source] = data.map(obj => obj.payload_fields[source])
-        if (removeLast) this.sourceData[source].splice(0, 1)
+        if (removeLast) {
+          this.sourceData[source].splice(0, 1)
+        }
       }
       this.sourceTimes = data.map(obj => moment(obj.metadata.time).format('HH:mm'))
-      if (removeLast) this.sourceTimes.splice(0, 1)
+      if (removeLast) {
+        this.sourceTimes.splice(0, 1)
+      }
     },
     getTimeInFormat (time, format) {
       return moment(time).format(format)
@@ -186,10 +190,10 @@ export default {
     }
   },
   async mounted () {
-    this.fetchData(true)
+    this.fetchData({removeLast: false})
     const self = this
     setInterval(() => {
-      self.fetchData(true)
+      self.fetchData({removeLast: true})
     }, 60000)
 
     // Create indexeddb connection

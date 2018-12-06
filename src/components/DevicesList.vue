@@ -4,11 +4,12 @@
     <b-card-group columns v-if="devicesList">
       <b-card
         v-for="device in devicesList"
-        :key="device"
-        :title="device">
-        <p class="card-text">
-          <b-button variant=success :to="`/device/${applicationId}/${device}`">View device</b-button>
-        </p>
+        :key="device.name"
+        :title="device.name">
+        <div class="card-text">
+          <p><i>Last updated {{getTimestamp(device.lastUpdated)}}</i></p>
+          <b-button variant=success :to="`/application/${applicationId}/device/${device.name}`">View device</b-button>
+        </div>
       </b-card>
     </b-card-group>
   </div>
@@ -17,6 +18,7 @@
 <script>
 import axios from 'axios'
 import * as config from '@/config'
+import moment from 'moment'
 
 export default {
   name: 'DevicesList',
@@ -37,6 +39,9 @@ export default {
       } catch (e) {
         console.error(e)
       }
+    },
+    getTimestamp (timestamp) {
+      return moment(timestamp).fromNow()
     }
   },
   mounted () {
