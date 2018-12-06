@@ -47,6 +47,23 @@
         </b-form-group>
       </b-form>
     </b-modal>
+
+    <notifications group=custom-template-warning position="top center">
+      <template slot=body slot-scope=props>
+        <b-alert show dismissible variant=warning @dismissed="props.close">
+          <h4>{{ props.item.title }}</h4>
+          <p>{{ props.item.text }}</p>
+        </b-alert>
+      </template>
+    </notifications>
+    <notifications group=custom-template-danger position="top center">
+      <template slot=body slot-scope=props>
+        <b-alert show dismissible variant=danger @dismissed="props.close">
+          <h4>{{ props.item.title }}</h4>
+          <p>{{ props.item.text }}</p>
+        </b-alert>
+      </template>
+    </notifications>
   </div>
 </template>
 
@@ -56,6 +73,7 @@ import BarChart from '@/components/BarChart'
 import axios from 'axios'
 import moment from 'moment'
 import Dexie from 'dexie'
+import * as config from '@/config'
 
 export default {
   name: 'Device',
@@ -79,7 +97,9 @@ export default {
       elementSourceDataOptions: [],
       sourceData: {},
       elementList: [],
-      chartOptions: {responsive: true},
+      chartOptions: {
+        responsive: true
+      },
       ids: {
         application: this.$route.params.applicationId,
         device: this.$route.params.deviceId
@@ -91,12 +111,27 @@ export default {
       // Create requrest and get data
       let currentDate = new Date()
       let minimalDate = moment(currentDate).subtract(30, 'minutes').utcOffset('+00:00').toISOString()
-      const {data, status, statusText} = await axios.get(`https://maker-panel-backend.herokuapp.com/api/rest/${this.ids.application}/device/${this.ids.device}?time=${minimalDate}`)
+      const {data, status, statusText} = await axios.get(`${config.backendUrl}/application/${this.ids.application}/device/${this.ids.device}`)
       if (status > 399) {
-        return alert(statusText)
+        return this.$notify({
+          group: 'custom-template-danger',
+          title: 'Error',
+          text: statusText
+        })
       }
       if (data.length === 0) {
-        return alert('No data was provided!')
+        return this.$notify({
+          group: 'custom-template-warning',
+          title: 'Warning',
+          text: 'No data was provided!'
+        })
+      }
+      if (new Date(data[0].metadata.time) < new Date(minimalDate)) {
+        this.$notify({
+          group: 'custom-template-warning',
+          title: 'Warning',
+          text: 'This data might not be up to date!'
+        })
       }
 
       // Get source options

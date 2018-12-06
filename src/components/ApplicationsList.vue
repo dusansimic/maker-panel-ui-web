@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios'
+import * as config from '@/config'
 
 export default {
   name: 'ApplicationsList',
@@ -27,7 +28,7 @@ export default {
   methods: {
     async fetchApplications () {
       try {
-        const {data: applicationsList} = await axios.get('https://maker-panel-backend.herokuapp.com/api/rest/applications')
+        const {data: applicationsList} = await axios.get(`${config.backendUrl}/applications`)
 
         this.applicationsList = applicationsList
       } catch (e) {

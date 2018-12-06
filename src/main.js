@@ -3,11 +3,13 @@ import App from './App'
 import store from './store'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
+import Notifications from 'vue-notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './registerServiceWorker'
 
 Vue.use(BootstrapVue)
+Vue.use(Notifications)
 
 Vue.config.productionTip = false
 
