@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  maker-panel-ui-web:
+    image: maker-panel-ui-web
+    build: .
+    ports:
+      - 8080:8080

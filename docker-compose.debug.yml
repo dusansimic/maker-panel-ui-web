@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  maker-panel-ui-web:
+    image: maker-panel-ui-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
