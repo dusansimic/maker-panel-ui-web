@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "VUE_DEVELOPMENT=true vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.2",
     "dexie": "^2.0.4",
+    "ky": "^0.5.1",
     "moment": "^2.22.2",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",

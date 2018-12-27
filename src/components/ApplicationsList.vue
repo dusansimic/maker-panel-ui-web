@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import ky from 'ky'
 import * as config from '@/config'
 
 export default {
@@ -28,7 +28,7 @@ export default {
   methods: {
     async fetchApplications () {
       try {
-        const {data: applicationsList} = await axios.get(`${config.backendUrl}/applications`)
+        const applicationsList = await ky.get(`${config.backendUrl}/applications`).json()
 
         this.applicationsList = applicationsList
       } catch (e) {

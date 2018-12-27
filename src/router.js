@@ -26,7 +26,7 @@ export default new Router({
       component: Devices
     },
     {
-      path: '/device/:applicationId/:deviceId',
+      path: '/application/:applicationId/device/:deviceId',
       name: 'device',
       component: Device
     },

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import ky from 'ky'
 import * as config from '@/config'
 import moment from 'moment'
 
@@ -33,7 +33,7 @@ export default {
   methods: {
     async fetchDevices () {
       try {
-        const {data: devicesList} = await axios.get(`${config.backendUrl}/application/${this.applicationId}/devices`)
+        const devicesList = await ky.get(`${config.backendUrl}/application/${this.applicationId}/devices`).json()
 
         this.devicesList = devicesList
       } catch (e) {
