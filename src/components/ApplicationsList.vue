@@ -16,7 +16,7 @@
 
 <script>
 import ky from 'ky'
-import * as config from '@/config'
+import config from '@/config'
 
 export default {
   name: 'ApplicationsList',

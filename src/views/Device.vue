@@ -87,7 +87,7 @@ import PlainValue from '@/components/PlainValue'
 import ky from 'ky'
 import moment from 'moment'
 import Dexie from 'dexie'
-import * as config from '@/config'
+import config from '@/config'
 
 export default {
   name: 'Device',

@@ -5,6 +5,7 @@ import Applications from './views/Applications'
 import Devices from './views/Devices'
 import Device from './views/Device'
 import About from './views/About'
+import FilterMap from './views/FilterMap'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/mapfilter',
+      name: 'filtermap',
+      component: FilterMap
     }
   ]
 })

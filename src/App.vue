@@ -66,6 +66,7 @@
             <b-collapse is-nav id=nav_collapse>
               <b-navbar-nav class="ml-auto">
                 <b-nav-item to=/ exact class="noselect">Home</b-nav-item>
+                <b-nav-item to=/mapfilter exact class="noselect">Map filter</b-nav-item>
                 <b-nav-item to=/apps exact class="noselect">Applications</b-nav-item>
                 <b-nav-item to=/about exact class="noselect">About</b-nav-item>
               </b-navbar-nav>
